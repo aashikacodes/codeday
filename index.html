@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Code Day</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <nav>
+      <div class="logo">
+        <img src="CodeDay.svg" alt="Code day logo" />
+      </div>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#generative-art">Generative Art</a></li>
+        
+        <li><a href="#chat-assistant">Chat Assistant</a></li>
+      </ul>
+    </nav>
+    <h1 id="home">CODE DAY IIT-DELHI'24</h1>
+    <h3>What is code day?</h3>
+    <p>
+      <b>Code Day</b> is a global event that brings together students,
+      professionals, and tech enthusiasts for a day of learning, collaboration,
+      and creativity in coding. Typically, participants from various backgrounds
+      work on coding projects, from building websites and apps to developing
+      games and creating artistic visualizations using code. It's a hands-on
+      experience where people can learn new programming skills, explore
+      different technologies, and collaborate with others to solve real-world
+      problems. Code Day often includes workshops, mentorship opportunities, and
+      challenges that encourage innovation and creativity. The event is designed
+      to be inclusive, welcoming individuals with all levels of coding
+      experience, from beginners to advanced developers. It’s a fantastic
+      opportunity for people to network, share ideas, and gain practical
+      experience in a fun, supportive environment. The spirit of
+      <b>CodeDay</b> revolves around learning through doing, fostering a
+      community of curious minds who are eager to explore the limitless
+      possibilities of technology.
+    </p>
+    <h3>How was my experience</h3>
+    <p>
+      I had an incredible time at Code Day! The energy was fantastic, and the
+      workshops were super engaging. The Generative AI session, in particular,
+      blew my mind. We explored how AI can be used to create art, which was both
+      fascinating and inspiring. I learned a lot of new concepts, from how AI
+      models are trained to the creative possibilities they offer. It wasn’t
+      just about coding; it was about pushing boundaries and experimenting with
+      new ideas. The hands-on activities allowed me to dive deep into the
+      technology, and I left with a newfound excitement for AI. Another
+      highlight was the chat with Walden Yan. It was insightful and motivating
+      to hear from someone who’s making such an impact in the field. He shared
+      valuable advice on navigating the tech world and creating innovative
+      projects, which really stuck with me. Overall, Code Day was a blast, and I
+      can’t wait for the next one!
+    </p>
+    <img src="iitd.jpeg" alt="code day images" />
+    <img src="codedayimg.jpeg" alt="code day images" />
+    <img src="walden.jpeg" alt="code day images" />
+    <h2 id="generative-art">Generative Art</h2>
+    
+    <canvas
+      width="600"
+      height="600"
+      style="box-shadow: #33333333 1px 1px 10px 10px"
+    >
+    </canvas>
+    <script>
+      let canvas = document.querySelector("canvas");
+      canvas.style.border = "yellow 10px solid";
+      let ctx = canvas.getContext("2d");
+
+      function draw() {
+        let x = Math.random() * 600;
+        let y = Math.random() * 600;
+        let w = Math.random() * 100;
+        let h = Math.random() * 100;
+        let r = Math.random() * 255;
+        let g = Math.random() * 255;
+        let b = Math.random() * 255;
+
+        ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+        ctx.fillRect(x, y, w, h);
+
+        requestAnimationFrame(draw);
+      }
+      requestAnimationFrame(draw);
+    </script>
+    <h1>Chat Assistant</h1>
+    <div
+      id="chat-box"
+      style="
+        margin: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      "
+    >
+      <div
+        id="messages"
+        style="max-height: 300px; overflow-y: auto; margin-bottom: 10px"
+      ></div>
+      <input
+        type="text"
+        id="user-input"
+        placeholder="Type your message here..."
+        style="width: 70%; padding: 10px"
+      />
+      <button id="send-button" style="padding: 10px">Send</button>
+    </div>
+    <script>
+      document.getElementById("send-button").onclick = function () {
+        const message = document.getElementById("user-input").value;
+        fetch("/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message: message }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const messagesDiv = document.getElementById("messages");
+            messagesDiv.innerHTML += `<div><strong>User:</strong> ${message}</div>`;
+            messagesDiv.innerHTML += `<div><strong>Assistant:</strong> ${data.response}</div>`;
+            document.getElementById("user-input").value = ""; // Clear input
+            messagesDiv.scrollTop = messagesDiv.scrollHeight; // Scroll to the bottom
+          })
+          .catch((error) => console.error("Error:", error));
+      };
+    </script>
+  </body>
+</html>
